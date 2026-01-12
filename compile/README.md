@@ -1,5 +1,7 @@
 ## Compile
-`bash convert-in-docker.sh ksnn` 
+```
+bash convert-in-docker.sh ksnn
+``` 
 
 
 ## Reference
