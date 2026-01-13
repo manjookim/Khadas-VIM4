@@ -1,7 +1,7 @@
 ### Accuracy 측정
 1. 결과 json 파일 추출
 ```
-python3 letterbox.py
+python3 detection.py --model /home/khadas2/model/t3/yolov8n_int8.adla --library /home/khadas2/model/t3/libnn_yolov8n.so --dataset /home/khadas2/dataset/COCO/val2017_1000_sample/
 ```
 
 [yolov8n/letterbox.py](https://github.com/manjookim/Khadas-VIM4/blob/main/accuracy/yolov8n/letterbox.py)    
