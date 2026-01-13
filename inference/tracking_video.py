@@ -1,0 +1,204 @@
+import numpy as np
+import os
+import argparse
+import cv2 as cv
+from ksnn.api import KSNN
+import time
+import sys
+
+# ByteTrack 경로 설정
+sys.path.append(os.path.join(os.getcwd(), 'ByteTrack'))
+from ByteTrack.byte_tracker import BYTETracker
+
+class TrackerArgs:
+    def __init__(self):
+        self.track_thresh = 0.25  # 탐지 신뢰도 임계값
+        self.track_buffer = 60    # 물체를 놓쳤을 때 유지할 프레임 수
+        self.match_thresh = 0.7   # 매칭 임계값
+        self.mot20 = False
+
+OBJ_THRESH = 0.3  # 너무 낮으면 트래커 성능이 오히려 떨어질 수 있음
+NMS_THRESH = 0.45
+mean = [0, 0, 0]
+var = [255]
+NUM_CLS = 80
+constant_martix = np.array([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]]).T
+
+def sigmoid(x): return 1 / (1 + np.exp(-x))
+
+def softmax(x, axis=0):
+    x = np.exp(x)
+    return x / x.sum(axis=axis, keepdims=True)
+
+def letterbox(img, new_shape=(640, 640), color=(114, 114, 114)):
+    #print(img.shape)
+    shape = img.shape[:2] # [height, width]
+    r = min(new_shape[0] / shape[0], new_shape[1] / shape[1])
+    
+    new_unpad = (int(round(shape[1] * r)), int(round(shape[0] * r)))
+    dw, dh = new_shape[1] - new_unpad[0], new_shape[0] - new_unpad[1]
+    
+    dw /= 2 # 양쪽 여백 분할
+    dh /= 2
+    
+    if shape[::-1] != new_unpad:
+        img = cv.resize(img, new_unpad, interpolation=cv.INTER_LINEAR)
+    
+    top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
+    left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
+    
+    img = cv.copyMakeBorder(img, top, bottom, left, right, cv.BORDER_CONSTANT, value=color)
+    return img, r, (left, top)
+
+def process(input):
+    grid_h, grid_w = map(int, input.shape[0:2])
+    box_class_probs = sigmoid(input[..., :NUM_CLS])
+    box_0 = softmax(input[..., NUM_CLS: NUM_CLS + 16], -1)
+    box_1 = softmax(input[..., NUM_CLS + 16:NUM_CLS + 32], -1)
+    box_2 = softmax(input[..., NUM_CLS + 32:NUM_CLS + 48], -1)
+    box_3 = softmax(input[..., NUM_CLS + 48:NUM_CLS + 64], -1)
+    
+    result = np.zeros((grid_h, grid_w, 1, 4))
+    result[..., 0] = np.dot(box_0, constant_martix)[..., 0]
+    result[..., 1] = np.dot(box_1, constant_martix)[..., 0]
+    result[..., 2] = np.dot(box_2, constant_martix)[..., 0]
+    result[..., 3] = np.dot(box_3, constant_martix)[..., 0]
+
+    col = np.tile(np.arange(0, grid_w), grid_w).reshape(-1, grid_w).reshape(grid_h, grid_w, 1, 1)
+    row = np.tile(np.arange(0, grid_h).reshape(-1, 1), grid_h).reshape(grid_h, grid_w, 1, 1)
+    grid = np.concatenate((col, row), axis=-1)
+
+    # 표준 YOLOv8 수식 적용
+    result[..., 0:2] = (grid + 0.5 - result[..., 0:2]) / (grid_w, grid_h)
+    result[..., 2:4] = (grid + 0.5 + result[..., 2:4]) / (grid_w, grid_h)
+    return result, box_class_probs
+
+def filter_boxes(boxes, box_class_probs):
+    box_classes = np.argmax(box_class_probs, axis=-1)
+    box_class_scores = np.max(box_class_probs, axis=-1)
+    pos = np.where(box_class_scores >= OBJ_THRESH)
+    return boxes[pos], box_classes[pos], box_class_scores[pos]
+
+def nms_boxes(boxes, scores):
+    x1, y1, x2, y2 = boxes[:, 0], boxes[:, 1], boxes[:, 2], boxes[:, 3]
+    areas = (x2 - x1) * (y2 - y1)
+    order = scores.argsort()[::-1]
+    keep = []
+    while order.size > 0:
+        i = order[0]
+        keep.append(i)
+        xx1, yy1 = np.maximum(x1[i], x1[order[1:]]), np.maximum(y1[i], y1[order[1:]])
+        xx2, yy2 = np.minimum(x2[i], x2[order[1:]]), np.minimum(y2[i], y2[order[1:]])
+        w, h = np.maximum(0.0, xx2 - xx1 + 1e-5), np.maximum(0.0, yy2 - yy1 + 1e-5)
+        inter = w * h
+        ovr = inter / (areas[i] + areas[order[1:]] - inter)
+        inds = np.where(ovr <= NMS_THRESH)[0]
+        order = order[inds + 1]
+    return np.array(keep)
+
+def yolov8_post_process(input_data):
+
+    boxes, classes, scores = [], [], []
+    for i in range(3):
+        res, conf = process(input_data[i])
+        b, c, s = filter_boxes(res, conf)
+        boxes.append(b); classes.append(c); scores.append(s)
+    boxes = np.concatenate(boxes); classes = np.concatenate(classes); scores = np.concatenate(scores)
+
+    nboxes, nclasses, nscores = [], [], []
+    for c in set(classes):
+        inds = np.where(classes == c)
+        b, s = boxes[inds], scores[inds]
+        keep = nms_boxes(b, s)
+        nboxes.append(b[keep]); nclasses.append(classes[inds][keep]); nscores.append(s[keep])
+    
+    if not nclasses: return None, None, None
+    return np.concatenate(nboxes), np.concatenate(nscores), np.concatenate(nclasses)
+
+def run_video_tracking(args):
+    yolov8 = KSNN('VIM4')
+    yolov8.nn_init(library=args.library, model=args.model, level=0)
+    
+    cap = cv.VideoCapture(args.input)
+    width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
+    fps = cap.get(cv.CAP_PROP_FPS)
+
+    tracker = BYTETracker(TrackerArgs(), frame_rate=fps)
+    print("FPS", fps)
+    
+    fourcc = cv.VideoWriter_fourcc(*'mp4v')
+    out = cv.VideoWriter('output_tracking.mp4', fourcc, fps, (width, height))
+
+    print(f"Video Processing Started: {args.input} ({width}x{height} @ {fps}fps)")
+
+    frame_count = 0
+    total = 0
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+       
+        img_pad, ratio, (pad_left, pad_top) = letterbox(frame, (640, 640))
+        img = img_pad.astype(np.float32)
+        img[:, :, 0] -= mean[0]; img[:, :, 1] -= mean[1]; img[:, :, 2] -= mean[2]
+        img /= var[0]
+
+        start = time.time()
+      
+        data = yolov8.nn_inference(img, input_shape=(640, 640, 3), input_type="RAW", 
+                                   output_shape=[(40, 40, 144), (80, 80, 144), (20, 20, 144)], 
+                                   output_type="FLOAT")
+        
+        end = time.time()
+        total += (end - start)
+
+        input_data = [np.expand_dims(data[2], 2), np.expand_dims(data[0], 2), np.expand_dims(data[1], 2)]
+        boxes, scores, classes = yolov8_post_process(input_data)
+
+        
+        if boxes is not None:
+            detections = np.column_stack([boxes * 640, scores])
+            online_targets = tracker.update(detections, [height, width], (640, 640)) #탐지된 객체
+            
+            for t in online_targets:
+                tlbr = t.tlbr 
+                tid = t.track_id
+                
+                # 원본 좌표 복원
+                x1 = int(round((tlbr[0] - pad_left) / ratio))
+                y1 = int(round((tlbr[1] - pad_top) / ratio))
+                x2 = int(round((tlbr[2] - pad_left) / ratio))
+                y2 = int(round((tlbr[3] - pad_top) / ratio))
+
+                x1 = max(0, min(width, x1))
+                y1 = max(0, min(height, y1))
+                x2 = max(0, min(width, x2))
+                y2 = max(0, min(height, y2))
+
+                print(f"IMG SIZE: {width}x{height} | DRAW ID {tid} at ({x1}, {y1})")
+
+                # 시각화
+                color = (0, 255, 0)
+                cv.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+                cv.putText(frame, f"ID:{tid}", (x1, y1 - 10), 
+                           cv.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
+
+        out.write(frame)
+        frame_count += 1
+        if frame_count % 30 == 0:
+            print(f"Processed {frame_count} frames...")
+
+    cap.release()
+    out.release()
+    yolov8.nn_destory_network()
+    print("Tracking Completed. Result saved as 'output_tracking.mp4'")
+    print("Inference time per frame ", total / frame_count)
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--library", required=True)
+    parser.add_argument("--model", required=True)
+    parser.add_argument("--input", required=True, help="Input video file path")
+    args = parser.parse_args()
+    run_video_tracking(args)
