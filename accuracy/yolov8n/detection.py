@@ -183,7 +183,7 @@ if __name__ == '__main__':
 
         if idx % 100 == 0: print(f"Progress: {idx}/{len(img_list)}")
 
-    with open("detections.json", "w") as f:
+    with open("detection_results.json", "w") as f:
         json.dump(results_json, f)
     
     print("Avg Inference time per image", total / len(img_list))
