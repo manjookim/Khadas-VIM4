@@ -25,7 +25,7 @@ pip install -e .
    from . import matching
    from .basetrack import BaseTrack, TrackState
    ```
-   c) [matching.py](https://github.com/manjookim/Khadas-VIM4/blob/main/inference/ByteTrack/matching.py` import 부분 수정
+   c) [matching.py](https://github.com/manjookim/Khadas-VIM4/blob/main/inference/ByteTrack/matching.py) import 부분 수정
    ```
    from cython_bbox import bbox_overlaps as bbox_ious
    #from yolox.tracker import kalman_filter
