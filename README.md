@@ -35,7 +35,7 @@ sudo docker run hello-world
 ```
 docker pull numbqq/npu-vim4
 ```
-3. Get Converto Tool
+3. Get Convert Tool
 ```
 wget https://dl.khadas.com/products/vim4/tools/npu-sdk/vim4_npu_sdk-ddk-3.4.7.7-250508.tgz
 tar xvzf vim4_npu_sdk-ddk-3.4.7.7-250508.tgz
