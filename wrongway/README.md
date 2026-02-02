@@ -46,7 +46,7 @@ cd altech_wrongway_vim4_timvx
 
 **중요**: 먼저 Khadas NPU SDK를 설치해야 합니다.
 
-- 문서: https://docs.khadas.com/products/sbc/vim4/npu/npu-sdk
+- 문서: https://github.com/manjookim/Khadas-VIM4/tree/main/
 - 설치 방법 및 요구사항은 공식 문서 참조
 
 ### 3. venv 환경 설정
@@ -210,4 +210,5 @@ CPU 레퍼런스 패키지와 동일한 샘플 비디오/설정으로 실행하�
 ## 문의
 
 기술 지원이 필요한 경우 문의해 주세요.
+
 
