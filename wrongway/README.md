@@ -66,7 +66,7 @@ source venv/bin/activate
 
 YOLO 모델을 ADLA 형식으로 변환해야 합니다.
 
-- 변환 방법: Khadas 문서 참조
+- 변환 방법: Github 및 공식 문서 참조
   - https://github.com/manjookim/Khadas-VIM4/tree/main/compile
 - 변환된 모델 파일을 `models/` 디렉터리에 배치
 
@@ -200,6 +200,7 @@ CPU 레퍼런스 패키지와 동일한 JSON Lines 형식 이벤트 로그를 �
 ## 문의
 
 기술 지원이 필요한 경우 문의해 주세요.
+
 
 
 
