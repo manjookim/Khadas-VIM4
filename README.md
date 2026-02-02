@@ -1,4 +1,4 @@
-# Khadas-VIM4
+# Khadas new VIM4
 Khadas new VIM4 NPU - AI 가속기 연구 
 
 ## 환경설정
