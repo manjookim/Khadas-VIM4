@@ -5,7 +5,7 @@ Khadas new VIM4 NPU - AI 가속기 연구
 - PC / Khadas new VIM4 따로 환경설정
 
 ### PC 환경설정
-1. Docker Install   
+#### 1. Docker Install   
 ```
 # Add Docker's official GPG key:
 sudo apt update
