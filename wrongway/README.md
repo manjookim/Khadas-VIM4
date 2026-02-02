@@ -143,7 +143,7 @@ def detect(self, frame: np.ndarray) -> List[Det]:
 chmod +x scripts/run.sh
 
 # 비디오 파일 입력
-./scripts/run.sh --source video.mp4 --config configs/sample.roi.json --model models/model.timvx --output events.log
+./scripts/run.sh --source video.mp4 --config configs/sample.roi.json --model models/model.adla --output events.log
 ```
 
 ### 명령줄 인자
@@ -201,6 +201,7 @@ CPU 레퍼런스 패키지와 동일한 JSON Lines 형식 이벤트 로그를 �
 ## 문의
 
 기술 지원이 필요한 경우 문의해 주세요.
+
 
 
 
