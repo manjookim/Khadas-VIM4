@@ -1,1 +1,3 @@
 - `test.py` : 기본 API 사용한 심플한 추론 코드
+- `tracking_video.py` : yolov8 모델을 이용한 비디오 추론 코드
+- 
