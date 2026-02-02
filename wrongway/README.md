@@ -77,7 +77,7 @@ YOLO 모델을 ADLA 형식으로 변환해야 합니다.
 
 ### ROI 설정 파일 (JSON)
 
-https://github.com/manjookim/Khadas-VIM4/blob/main/wrongway/configs/sample.roi.json 을 참고하세요.
+[sample.roi.json](https://github.com/manjookim/Khadas-VIM4/blob/main/wrongway/configs/sample.roi.json) 을 참고하세요.
 
 ## 구현 가이드
 
@@ -203,6 +203,7 @@ CPU 레퍼런스 패키지와 동일한 JSON Lines 형식 이벤트 로그를 �
 ## 문의
 
 기술 지원이 필요한 경우 문의해 주세요.
+
 
 
 
