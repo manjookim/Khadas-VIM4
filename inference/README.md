@@ -13,7 +13,7 @@
 
 1. RAW : cpu 전처리 코드 별도 필요 
 ```
-orig_img = cv.imread(picture, cv.IMREAD_COLOR)
+        orig_img = cv.imread(picture, cv.IMREAD_COLOR)
         h, w = orig_img.shape[:2]
         # --- [Letterbox 적용] ---
         img_pad, ratio, (pad_left, pad_top) = letterbox(orig_img, (640, 640))
@@ -35,7 +35,7 @@ orig_img = cv.imread(picture, cv.IMREAD_COLOR)
 ```
 2. RGB : npu 내부에서 전처리 수행     
 ```
-orig_img = cv.imread(picture, cv.IMREAD_COLOR)
+        orig_img = cv.imread(picture, cv.IMREAD_COLOR)
         h, w = orig_img.shape[:2]
         # --- [Letterbox 적용] ---
         img_pad, ratio, (pad_left, pad_top) = letterbox(orig_img, (640, 640))
