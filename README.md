@@ -31,11 +31,11 @@ sudo systemctl status docker
 sudo systemctl start docker
 sudo docker run hello-world
 ```
-2. Docker image pull 
+#### 2. Docker image pull 
 ```
 docker pull numbqq/npu-vim4
 ```
-3. Get Convert Tool
+#### 3. Get Convert Tool
 ```
 wget https://dl.khadas.com/products/vim4/tools/npu-sdk/vim4_npu_sdk-ddk-3.4.7.7-250508.tgz
 tar xvzf vim4_npu_sdk-ddk-3.4.7.7-250508.tgz
@@ -45,7 +45,7 @@ ls
 ```
 
 ### Khadas new VIM4 환경설정
-1. Git clone & ksnn install 
+#### 1. Git clone & ksnn install 
 ```
 sudo apt update
 source venv/bin/activate
