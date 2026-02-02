@@ -65,9 +65,9 @@ chmod +x scripts/setup_venv.sh
 source venv/bin/activate
 ```
 
-### 5. 모델 변환 (YOLO -> TIM-VX)
+### 5. 모델 변환 (YOLO -> ADLA)
 
-YOLO 모델을 TIM-VX 형식으로 변환해야 합니다.
+YOLO 모델을 ADLA 형식으로 변환해야 합니다.
 
 - 변환 방법: Khadas 문서 참조
   - https://github.com/manjookim/Khadas-VIM4/tree/main/compile
@@ -77,13 +77,10 @@ YOLO 모델을 TIM-VX 형식으로 변환해야 합니다.
 
 ### ROI 설정 파일 (JSON)
 
-CPU 레퍼런스 패키지와 동일한 형식입니다. `configs/sample.roi.json`을 참고하세요.
+`configs/sample.roi.json`을 참고하세요.
 
 ## 구현 가이드
 
-### inference_backend.py 구현
-
-`app/inference_backend.py` 파일의 `TODO(VIM4)` 주석 부분을 구현하세요.
 
 #### CONTRACT (계약)
 
@@ -103,7 +100,7 @@ def detect(self, frame: np.ndarray) -> List[Det]:
 
 #### 구현 단계
 
-1. **TIM-VX 엔진 초기화** (`__init__` 메서드)
+1. **NPU 엔진 초기화** (`__init__` 메서드)
    - 모델 파일 로드
    - 입력/출력 텐서 정보 확인
 
@@ -114,7 +111,7 @@ def detect(self, frame: np.ndarray) -> List[Det]:
    - 스케일 및 패딩 정보 저장 (좌표 복원용)
 
 3. **NPU 추론**
-   - TIM-VX 엔진으로 추론 실행
+   - KSNN 엔진으로 추론 실행
    - 출력 텐서 파싱 (박스, 점수, 클래스)
 
 4. **후처리**
@@ -137,10 +134,6 @@ def detect(self, frame: np.ndarray) -> List[Det]:
 - 스케일 적용: `original_x = (detected_x - pad_x) / scale`
 - 원본 프레임 좌표계로 변환
 
-### 트래커 구현 (선택)
-
-`app/tracker_impl.py`는 간단한 스켈레톤 구현이 포함되어 있습니다. 필요시 더 정교한 트래커(예: Kalman 필터 기반)로 교체 가능합니다.
-
 ## 실행
 
 ### 기본 실행
@@ -154,8 +147,6 @@ chmod +x scripts/run.sh
 ```
 
 ### 명령줄 인자
-
-CPU 레퍼런스 패키지와 동일하지만 `--tracker` 옵션이 없습니다 (트래커는 코드 내부 구현).
 
 | 인자 | 필수 | 기본값 | 설명 |
 |------|------|--------|------|
@@ -186,7 +177,7 @@ CPU 레퍼런스 패키지와 동일한 JSON Lines 형식 이벤트 로그를 �
 - [ ] 변환 도구 설치
 - [ ] 입력 해상도 확인 (예: 640x640)
 - [ ] 출력 레이어 이름 확인
-- [ ] TIM-VX 모델 파일 생성
+- [ ] ADLA 모델 파일 생성
 - [ ] 모델 파일을 `models/` 디렉터리에 배치
 
 ## 트러블슈팅
@@ -205,10 +196,11 @@ CPU 레퍼런스 패키지와 동일한 JSON Lines 형식 이벤트 로그를 �
 
 ## 검증
 
-CPU 레퍼런스 패키지와 동일한 샘플 비디오/설정으로 실행하여 동일한 이벤트 로그가 생성되는지 확인하세요.
+샘플 비디오/설정으로 실행하여 이벤트 로그가 생성되는지 확인하세요.
 
 ## 문의
 
 기술 지원이 필요한 경우 문의해 주세요.
+
 
 
