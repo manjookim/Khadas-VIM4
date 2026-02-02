@@ -22,3 +22,4 @@ bash convert-in-docker.sh ksnn
 
 
 ## Reference
+[https://docs.khadas.com/products/sbc/vim4/npu/npu-sdk](https://docs.khadas.com/products/sbc/vim4/npu/npu-sdk)
