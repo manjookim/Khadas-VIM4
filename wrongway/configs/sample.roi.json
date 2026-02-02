@@ -1,0 +1,24 @@
+{
+  "roi_points": [
+    [28, 789],
+    [43, 1020],
+    [1831, 1020],
+    [1896, 160],
+    [1351, 151],
+    [14, 787]
+  ],
+  "original_width": 1920,
+  "original_height": 1080,
+  "reference_direction": [
+    0.8253072500228882,
+    -0.5646839141845703
+  ],
+  "reference_start_point": [
+    907,
+    686
+  ],
+  "reference_end_point": [
+    1363,
+    374
+  ]
+}
