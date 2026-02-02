@@ -159,7 +159,7 @@ chmod +x scripts/run.sh
 | `--output` | ❌ | stdout | 이벤트 로그 파일 |
 | `--queue` | ❌ | `4` | 프레임 큐 크기 |
 | `--snapshot-dir` | ❌ | - | 스냅샷 저장 디렉터리 |
-| `--mode` | ❌ | `full` | 추론 모드 선택 ('io', 'detect', 'full) |
+| `--mode` | ❌ | `full` | 추론 모드 선택 ('io', 'detect', 'full') |
 
 ## 출력
 
@@ -203,6 +203,7 @@ CPU 레퍼런스 패키지와 동일한 JSON Lines 형식 이벤트 로그를 �
 ## 문의
 
 기술 지원이 필요한 경우 문의해 주세요.
+
 
 
 
