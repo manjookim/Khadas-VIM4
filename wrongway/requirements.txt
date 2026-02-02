@@ -1,0 +1,6 @@
+# 역주행 검지 시스템 필수 패키지 (VIM4 TIM-VX)
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+# TODO(VIM4): Khadas NPU SDK 패키지 추가
+# khadas-npu-sdk (설치 방법은 Khadas 문서 참조)
