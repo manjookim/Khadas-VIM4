@@ -19,13 +19,13 @@ pip install -e .
    ```
    touch ~/accuracy/ByteTrack/__init__.py
    ```
-   b) `byte_tracker.py` import 부분 수정
+   b) [byte_tracker.py](https://github.com/manjookim/Khadas-VIM4/blob/main/inference/ByteTrack/byte_tracker.py) import 부분 수정
    ```
    from .kalman_filter import KalmanFilter
    from . import matching
    from .basetrack import BaseTrack, TrackState
    ```
-   c) `matching.py` import 부분 수정
+   c) [matching.py](https://github.com/manjookim/Khadas-VIM4/blob/main/inference/ByteTrack/matching.py` import 부분 수정
    ```
    from cython_bbox import bbox_overlaps as bbox_ious
    #from yolox.tracker import kalman_filter
