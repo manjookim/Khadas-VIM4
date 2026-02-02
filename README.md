@@ -44,6 +44,14 @@ ls
 #adla-toolkit-binary  adla-toolkit-binary-3.1.7.4  convert-in-docker.sh  Dockerfile  docs  README.md
 ```
 
+### Khadas new VIM4 환경설정
+1. Git clone & ksnn install 
+```
+sudo apt update
+source venv/bin/activate
+git clone https://github.com/khadas/ksnn-vim4
+pip3 install ksnn/ksnn_vim4-1.4.1-py3-none-any.whl
+```
 
 
 
