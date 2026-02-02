@@ -3,8 +3,8 @@ import time
 import csv
 from datetime import datetime
 
-# 1. Shelly의 IP 주소를 입력하세요 (아까 찾은 172.20.10.x 대역)
-SHELLY_IP = "172.20.10.5" 
+# 1. Shelly의 IP 주소를 입력하세요 
+SHELLY_IP = "ip주소" 
 OUTPUT_FILE = "shelly_power_data.csv"
 
 print(f"{SHELLY_IP}에서 데이터 수집을 시작합니다. 중단하려면 Ctrl+C를 누르세요.")
@@ -23,14 +23,13 @@ try:
         if response.status_code == 200:
             data = response.json()
             power = data["apower"]    # 현재 전력 (W)
-            voltage = data["voltage"]  # 현재 전압 (V)
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
             # 화면 출력 및 파일 저장
-            print(f"[{now}] Power: {power}W, Voltage: {voltage}V")
+            print(f"[{now}] Power: {power}W")
             with open(OUTPUT_FILE, mode='a', newline='') as f:
                 writer = csv.writer(f)
-                writer.writerow([now, power, voltage])
+                writer.writerow([now, power])
         
         time.sleep(1)
 
