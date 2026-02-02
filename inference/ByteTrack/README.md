@@ -36,4 +36,5 @@ pip install -e .
 
 
 ### Reference
-[https://github.com/samson-wang/cython_bbox](https://github.com/samson-wang/cython_bbox)
+[https://github.com/FoundationVision/ByteTrack](https://github.com/FoundationVision/ByteTrack)    
+[https://github.com/samson-wang/cython_bbox](https://github.com/samson-wang/cython_bbox)    
