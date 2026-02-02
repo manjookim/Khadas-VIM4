@@ -2,8 +2,7 @@
 
 ## 개요
 
-이 패키지는 Khadas VIM4 보드의 NPU (TIM-VX/Khadas NPU SDK)를 사용한 역주행 검지 시스템입니다. 
-**스캐폴딩 패키지**로 제공되며, `inference_backend.py`만 구현하면 전체 시스템이 동작합니다.
+이 패키지는 Khadas VIM4 보드의 NPU (KSNN/Khadas NPU SDK)를 사용한 역주행 검지 시스템입니다. 
 
 ### 패키지 목적
 
@@ -201,6 +200,7 @@ CPU 레퍼런스 패키지와 동일한 JSON Lines 형식 이벤트 로그를 �
 ## 문의
 
 기술 지원이 필요한 경우 문의해 주세요.
+
 
 
 
