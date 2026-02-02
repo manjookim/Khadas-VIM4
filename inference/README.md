@@ -33,7 +33,7 @@ orig_img = cv.imread(picture, cv.IMREAD_COLOR)
                                    output_shape=[(40, 40, 144), (80, 80, 144), (20, 20, 144)], 
                                    output_type="RAW")
 ```
-2. RGB : npu 내부에서 자동으로 수행     
+2. RGB : npu 내부에서 전처리 수행     
 ```
 orig_img = cv.imread(picture, cv.IMREAD_COLOR)
         h, w = orig_img.shape[:2]
