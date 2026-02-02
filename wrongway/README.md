@@ -152,12 +152,14 @@ chmod +x scripts/run.sh
 |------|------|--------|------|
 | `--source` | ✅ | - | 비디오 파일 경로 또는 카메라 인덱스 |
 | `--config` | ✅ | - | ROI 설정 파일 경로 (JSON) |
-| `--model` | ❌ | `models/model.timvx` | TIM-VX 모델 파일 경로 |
+| `--model` | ❌ | `models/model.adla` | ADLA 모델 파일 경로 |
+| `--library` | ✅ | - | ADLA 모델 라이브러리 경로 |
 | `--device` | ❌ | `npu` | 디바이스 (일반적으로 npu) |
 | `--conf` | ❌ | `0.35` | 신뢰도 임계값 |
 | `--output` | ❌ | stdout | 이벤트 로그 파일 |
 | `--queue` | ❌ | `4` | 프레임 큐 크기 |
 | `--snapshot-dir` | ❌ | - | 스냅샷 저장 디렉터리 |
+| `--mode` | ❌ | `full` | 추론 모드 선택 ('io', 'detect', 'full) |
 
 ## 출력
 
@@ -201,6 +203,7 @@ CPU 레퍼런스 패키지와 동일한 JSON Lines 형식 이벤트 로그를 �
 ## 문의
 
 기술 지원이 필요한 경우 문의해 주세요.
+
 
 
 
