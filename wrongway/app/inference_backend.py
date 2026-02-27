@@ -79,6 +79,10 @@ class InferenceBackend:
 
         self.total_det_time = 0
         self.det_count = 0
+
+        self.inference_rate=0.25
+        self.frame_count=0
+        self.last_detections = []
         
         print(f"[{self.device.upper()}] InferenceBackend initialized with {model_path}")
         #raise NotImplementedError("TODO(VIM4): TIM-VX/Khadas NPU SDK 연동 구현 필요")
@@ -229,6 +233,13 @@ class InferenceBackend:
 
         h, w = frame.shape[:2]
 
+        should_infer = int(self.frame_count * self.inference_rate) < int((self.frame_count +1) * self.inference_rate)
+        if not should_infer:
+            self.frame_count +=1
+            return self.last_detections
+        self.frame_count +=1
+        
+
         # 1. 전처리 (Letterbox)
         self.img_pad, self.ratio, (self.pad_left, self.pad_top) = self.letterbox(frame, (640, 640))
         self.img_rgb = cv.cvtColor(self.img_pad, cv.COLOR_BGR2RGB)
@@ -281,6 +292,7 @@ class InferenceBackend:
                         "class_id" : int(cl)
                         })
 
+        self.last_detections = detections
 
         #print("Inference Process Finish!")
         #print(detections)
