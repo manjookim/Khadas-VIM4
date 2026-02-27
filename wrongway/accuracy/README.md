@@ -19,9 +19,9 @@ python3 eval.py
 ```
 
 `eval.py` : MOTA, MOTP, IDF1, num_switches, precision, recall 값 계산 
-- MOTA :
-- MOTP :
-- IDF1 :
-- num_switches :
-- precision :
-- recall :
+- MOTA : 종합적인 정확도
+- MOTP : IoU의 평균값 
+- IDF1 : 객체의 동일한 ID 부여 일관성
+- num_switches : 한 객체의 ID 번호 바뀐 횟수
+- precision : 정밀도 
+- recall : 재현율 
