@@ -131,6 +131,15 @@ class WrongWayDetectorCore:
         # 트래커를 통해 검출 및 트래킹
         tracks = self.tracker.track(frame)
 
+        # --- [추가 시작] MOT 포맷 저장 로직 ---
+        with open("./accuracy/results.txt", "a") as f:
+            for x1, y1, x2, y2, conf, cls_id, track_id in tracks:
+                if track_id is not None:
+                    # MOT Format: <frame_idx>, <id>, <x>, <y>, <w>, <h>, <conf>, -1, -1, -1
+                    w = x2 - x1
+                    h = y2 - y1
+                    f.write(f"{frame_index+1},{track_id},{x1:.2f},{y1:.2f},{w:.2f},{h:.2f},{conf:.2f},-1,-1,-1\n")
+
         roi_polygon = np.array(self.roi_points, dtype=np.int32)
         events: List[WrongWayEvent] = []
         current_time = timestamp
