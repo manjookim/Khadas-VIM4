@@ -6,7 +6,7 @@
 
 ### 추론 데이터 생성
 
-`wrongway_core.py` : tracking result 를 txt 파일로 저장하는 코드 추가   
+[wrongway_core.py](https://github.com/manjookim/Khadas-VIM4/blob/main/wrongway/app/wrongway_core.py) : tracking result 를 txt 파일로 저장하는 코드 추가   
 
 ### 정확도 계산 
 
