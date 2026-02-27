@@ -11,8 +11,8 @@
 ### 정확도 계산 
 
 ```
-pip install motmetrics --break-system-packages 
-pip install "numpy<2.0" --break-system-packages
+pip install motmetrics  
+pip install "numpy<2.0" 
 ```
 ```
 python3 eval.py
