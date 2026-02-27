@@ -18,7 +18,7 @@ pip install "numpy<2.0"
 python3 eval.py
 ```
 
-`eval.py` : MOTA, MOTP, IDF1, num_switches, precision, recall 값 계산 
+[eval.py](https://github.com/manjookim/Khadas-VIM4/blob/main/wrongway/accuracy/eval.py) : MOTA, MOTP, IDF1, num_switches, precision, recall 값 계산 
 - MOTA  :  종합적인 정확도
 - MOTP  :  IoU의 평균값 
 - IDF1  :  객체의 동일한 ID 부여 일관성
