@@ -59,3 +59,4 @@ pip3 install ksnn/ksnn_vim4-1.4.1-py3-none-any.whl
 [https://www.khadas.com/vim4?page=6](https://www.khadas.com/vim4?page=6)   
 [https://docs.khadas.com/products/sbc/vim4/start](https://docs.khadas.com/products/sbc/vim4/start)   
 [https://docs.ultralytics.com/ko/models/yolov8/](https://docs.ultralytics.com/ko/models/yolov8/)   
+https://github.com/khadas/ksnn-vim4
