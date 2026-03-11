@@ -4,6 +4,9 @@
 
 [CVAT](https://www.cvat.ai/) 회원가입 후 Track box 그려서 직접 라벨링
 
+### frame dropping 코드 추가
+[inference_backend.py](https://github.com/manjookim/Khadas-VIM4/blob/main/wrongway/app/inference_backend.py) : frame dropping 비율 지정 가능 
+
 ### 추론 데이터 생성
 
 [wrongway_core.py](https://github.com/manjookim/Khadas-VIM4/blob/main/wrongway/app/wrongway_core.py) : tracking result 를 txt 파일로 저장하는 코드 추가   
